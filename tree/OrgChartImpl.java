@@ -10,18 +10,14 @@ public class OrgChartImpl implements OrgChart{
 	private GenericTreeNode<Employee> root;
 
 	public void addRoot(Employee e) {
-		if (root == null) {
-			root = new GenericTreeNode<>(e);
-		}
-		else {
-			GenericTreeNode<Employee> newRoot = new GenericTreeNode<>(e);
-			newRoot.addChild(root);
-		}
+		root = new GenericTreeNode<>(e);
+		nodes.add(root);
 	}
 	// if there is no orgchart, start it
 
 
 	public void clear() {
+		nodes = new ArrayList<>();
 		root = null;
 	}
 	// get rid of the org chart
