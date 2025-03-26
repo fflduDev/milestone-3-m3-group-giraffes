@@ -10,8 +10,11 @@ public class Employee implements Comparable<Employee> {
 	private String name;
 	private Integer id;
 	private String position;
-	
- 	public String getName() {
+
+	public Employee(String name, int id, String position) {
+	}
+
+	public String getName() {
 		return name;
 	}
 
