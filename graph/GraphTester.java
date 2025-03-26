@@ -37,7 +37,7 @@ public class GraphTester {
 		graph.addNode(new GraphNode("F"));
 		graph.addNode(new GraphNode("G"));
 		graph.addNode(new GraphNode("H"));
-		
+		/*
 		//add edges
 		graph.addEdgeStr("A", "B", 5);
 		graph.addEdgeStr("B", "C", 5);
@@ -70,6 +70,8 @@ public class GraphTester {
 		//test shortest path
 		System.out.println("Shortest from G to B is: " + graph.shortestPath(new GraphNode("G"), new GraphNode("B"))); 
 		printPath(graph.getShortestPath(new GraphNode("G"), new GraphNode("B")));
+
+		 */
 	}
-	
+
 }
