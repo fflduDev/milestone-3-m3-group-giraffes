@@ -61,17 +61,31 @@ public class DiGraphImpl implements DiGraph{
 
 	@Override
 	public Boolean addEdge(GraphNode fromNode, GraphNode toNode, Integer weight) {
-		return null;
+		if (fromNode.getValue().equals(toNode.getValue())) {
+			return false;
+		}
+		if (nodeList.contains(fromNode) && nodeList.contains(toNode)){
+			fromNode.addNeighbor(toNode, weight);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean removeEdge(GraphNode fromNode, GraphNode toNode) {
-		return null;
+		if (fromNode.getValue().equals(toNode.getValue())) {
+			return false;
+		}
+		if (nodeList.contains(fromNode) && nodeList.contains(toNode)){
+			fromNode.removeNeighbor(toNode);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean setEdgeValue(GraphNode fromNode, GraphNode toNode, Integer newWeight) {
-		return null;
+
 	}
 
 	@Override
