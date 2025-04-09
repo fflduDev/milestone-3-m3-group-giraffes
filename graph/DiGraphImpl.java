@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
  
 
@@ -11,22 +12,51 @@ public class DiGraphImpl implements DiGraph{
 
 	@Override
 	public Boolean addNode(GraphNode node) {
-		return null;
+		for (GraphNode n : nodeList) {
+			if (n.getValue().equals(node.getValue())) {
+				return false;
+			}
+		}
+		nodeList.add(node);
+		return true;
 	}
 
 	@Override
 	public Boolean removeNode(GraphNode node) {
-		return null;
+		Iterator<GraphNode> iterator = nodeList.iterator();
+		while (iterator.hasNext()) {
+			GraphNode n = iterator.next();
+			if (n.getValue().equals(node.getValue())) {
+				iterator.remove();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean setNodeValue(GraphNode node, String newNodeValue) {
-		return null;
+		if (node.getValue().equals(newNodeValue)) {
+			return false;
+		}
+		for (GraphNode n : nodeList) {
+			if (n.getValue().equals(node.getValue())) {
+				n.setValue(newNodeValue);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String getNodeValue(GraphNode node) {
-		return "";
+
+		for (GraphNode n : nodeList) {
+			if (n.getValue().equals(node.getValue())) {
+				return n.getValue();
+			}
+		}
+		return null;
 	}
 
 	@Override
