@@ -14,12 +14,19 @@ public class GenericTreeNode<E> {
 	}
 	
 	public void addChild(GenericTreeNode<E> child) {
-		child.setParent(this);
-		children.add(child);
+		if(child != null && !this.children.contains(child)) {
+			this.children.add(child);
+			child.setParent(this);
+		}
+
 	}
 	
 	public void removeChild(GenericTreeNode<E> child) {
-		children.remove(child);
+		if(child != null && this.children.contains(child)) {
+			this.children.remove(child);
+			child.setParent(null);
+		}
+
 
 	}
 

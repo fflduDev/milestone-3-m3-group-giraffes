@@ -10,8 +10,8 @@ public class OrgChartImpl implements OrgChart{
 
 	public void addRoot(Employee e) {
 		if(root == null) {
-			GenericTreeNode<Employee> newRoot = new GenericTreeNode<>(e);
-			nodes.add(newRoot);
+			root = new GenericTreeNode<>(e);
+			nodes.add(root);
 		}
 	}
 	// if there is no orgchart, start it
@@ -41,36 +41,81 @@ public class OrgChartImpl implements OrgChart{
 
 	public void removeEmployee(Employee firedPerson) {
 
+		for(int i =0; i < nodes.size(); i++) {
+			GenericTreeNode<Employee> currentEmployee = nodes.get(i);
+			if (currentEmployee.data.equals(firedPerson)) { //find fired person in nodes list
+				GenericTreeNode<Employee> parent = currentEmployee.parent; //get fired person's parent
+
+				if(parent !=null){ //ensures fired person isnt the root
+					for(GenericTreeNode<Employee> child : currentEmployee.children) { //goes through fired person children and adds them
+						parent.addChild(child);
+					}
+					parent.removeChild(currentEmployee); //removes fired person
+				}
+				nodes.remove(i);
+				break;
+			}
+		}
+
 	}
 	// remove the employee, give their direct reports to their supervisor
 
 	public void showOrgChartDepthFirst() {
-		System.out.println("Org Chart (DFS) of the company is:");
-		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
-		ArrayList<Employee> alreadyVisited= new ArrayList<>();
+		System.out.println("\nOrg Chart (DFS) of the company is:");
 
-		for(int i = 0; i <nodes.size(); i++) {
-			queue.add(nodes.get(i));
+		if(root == null) {
+			System.out.println("Root is null");
+			return;
+		}
+		Stack<GenericTreeNode<Employee>> stack = new Stack<>();
+		ArrayList<Employee> alreadyVisited = new ArrayList<>();
 
-			while(!queue.isEmpty()) {
-				GenericTreeNode<Employee> currentEmployee = queue.remove();
-
-			if(!alreadyVisited.contains(currentEmployee.data)) {
-				alreadyVisited.add(currentEmployee.data);
-				}
-			if(currentEmployee.children.size() > 0) {
-				queue.addAll(currentEmployee.children);
-				}
+		stack.push(root);
+		while(!stack.isEmpty()) {
+			GenericTreeNode<Employee> current = stack.pop();
+			if(!alreadyVisited.contains(current.data)) {
+				alreadyVisited.add(current.data);
+				System.out.println(" - " + current.data);
 			}
 
-		}
-		for(Employee e: alreadyVisited){
-			System.out.println(e);
+			for(int i = current.children.size()-1; i>= 0; i--) {
+				stack.push(current.children.get(i));
+			}
 		}
 
 	}
 
 	public void showOrgChartBreadthFirst() {
-	}
+	/*
+Push the root node into the queue
+For each level, Push the next-level nodes into the queue.
+Add the nodes in the queue to a temp list at that particular level.
+At the end of each traversal add the temp list to the result list
+*/
 
+
+		System.out.println("\nOrg Chart (BFS) of the company is:");
+
+		Queue<GenericTreeNode<Employee>> queue = new LinkedList<>();
+		if (root == null) {
+			System.out.println("Root is null");
+			return;
+		}
+
+		queue.add(root);
+		while (!queue.isEmpty()) {
+			int levelSize = queue.size();
+			for (int i = 0; i < levelSize; i++) {
+				GenericTreeNode<Employee> current = queue.poll();
+				System.out.print(current.data + " ");
+					if(i < levelSize - 1) { // This adds the dash mark between each persons information
+						System.out.print(" - ");
+					}
+				for (GenericTreeNode<Employee> child : current.children) {
+					queue.add(child);
+				}
+			}
+			System.out.println();
+		}
+	}
 }
