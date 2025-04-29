@@ -1,9 +1,7 @@
 package graph;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
- 
+import java.util.*;
+
 
 public class DiGraphImpl implements DiGraph{
 
@@ -85,37 +83,104 @@ public class DiGraphImpl implements DiGraph{
 
 	@Override
 	public Boolean setEdgeValue(GraphNode fromNode, GraphNode toNode, Integer newWeight) {
-
+		if (nodeList.contains(fromNode) && nodeList.contains(toNode)){
+			fromNode.addNeighbor(toNode, newWeight);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Integer getEdgeValue(GraphNode fromNode, GraphNode toNode) {
-		return 0;
+		return fromNode.getDistanceToNeighbor(toNode);
 	}
 
 	@Override
 	public List<GraphNode> getAdjacentNodes(GraphNode node) {
-		return List.of();
+		return node.getNeighbors();
 	}
 
 	@Override
 	public Boolean nodesAreAdjacent(GraphNode fromNode, GraphNode toNode) {
-		return null;
+		return fromNode.getNeighbors().contains(toNode);
 	}
 
 	@Override
 	public Boolean nodeIsReachable(GraphNode fromNode, GraphNode toNode) {
-		return null;
+		Queue<GraphNode> queue = new LinkedList<GraphNode>();
+		Set<GraphNode> visited = new HashSet<GraphNode>();
+
+
+		//start from the targetFromNode
+
+		queue.add(fromNode);
+		visited.add(fromNode);
+
+		//for all neighbors:
+		//check if visited.  If not, add to the queue.
+		//if targetToNode has been visited, return true
+
+		while (!queue.isEmpty()) {
+			GraphNode current = queue.poll();
+
+			for (GraphNode neighbor : current.getNeighbors()) {
+				if (!visited.contains(neighbor)) {
+					if (neighbor == toNode) {
+						return true;
+					}
+					visited.add(neighbor);
+					queue.add(neighbor);
+				}
+			}
+		}
+
+		//if u get here
+		return false;
 	}
 
 	@Override
 	public Boolean hasCycles() {
-		return null;
+		Set<GraphNode> visited = new HashSet<>();
+		Set<GraphNode> recStack = new HashSet<>();
+
+		Stack<GraphNode> stack = new Stack<>();
+		Map<GraphNode, Iterator<GraphNode>> neighborsMap = new HashMap<>();
+
+		for (GraphNode startNode : nodeList) {
+			if (!visited.contains(startNode)) {
+				stack.push(startNode);
+				neighborsMap.put(startNode, startNode.getNeighbors().iterator());
+				recStack.add(startNode);
+				visited.add(startNode);
+
+				while (!stack.isEmpty()) {
+					GraphNode current = stack.peek();
+					Iterator<GraphNode> neighbors = neighborsMap.get(current);
+
+					if (neighbors.hasNext()) {
+						GraphNode neighbor = neighbors.next();
+						if (!visited.contains(neighbor)) {
+							visited.add(neighbor);
+							recStack.add(neighbor);
+							stack.push(neighbor);
+							neighborsMap.put(neighbor, neighbor.getNeighbors().iterator());
+						} else if (recStack.contains(neighbor)) {
+							return true; // Found a cycle
+						}
+					} else {
+						recStack.remove(current);
+						stack.pop();
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	@Override
 	public List<GraphNode> getNodes() {
-		return List.of();
+		return nodeList;
 	}
 
 	@Override

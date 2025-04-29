@@ -28,7 +28,11 @@ public class GraphNode {
 		return new ArrayList<GraphNode>(paths.keySet());
 	}
 	
-	
+	public void printNeighbors() {
+		for (GraphNode node : getNeighbors()) {
+			System.out.println(node.getValue());
+		}
+	}
 	
 	public Integer getDistanceToNeighbor(GraphNode neighbor) {
 		for (GraphNode thisNode : paths.keySet()) {

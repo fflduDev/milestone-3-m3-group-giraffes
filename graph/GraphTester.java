@@ -28,50 +28,60 @@ public class GraphTester {
 		graph = new DiGraphImpl();
 		
 		//add nodes
-		graph.addNode(new GraphNode("A"));
-		graph.addNode(new GraphNode("A"));
-		graph.addNode(new GraphNode("B"));
-		graph.addNode(new GraphNode("C"));	
-		graph.addNode(new GraphNode("D"));
-		graph.addNode(new GraphNode("E"));
-		graph.addNode(new GraphNode("F"));
-		graph.addNode(new GraphNode("G"));
-		graph.addNode(new GraphNode("H"));
-		/*
+		GraphNode A = new GraphNode("A");
+		GraphNode B = new GraphNode("B");
+		GraphNode C = new GraphNode("C");
+		GraphNode D = new GraphNode("D");
+		GraphNode E = new GraphNode("E");
+		GraphNode F = new GraphNode("F");
+		GraphNode G = new GraphNode("G");
+		GraphNode H = new GraphNode("H");
+
+		graph.addNode(A);
+		graph.addNode(B);
+		graph.addNode(C);
+		graph.addNode(C);
+		graph.addNode(D);
+		graph.addNode(E);
+		graph.addNode(F);
+		graph.addNode(G);
+		graph.addNode(H);
+
 		//add edges
-		graph.addEdgeStr("A", "B", 5);
-		graph.addEdgeStr("B", "C", 5);
-		graph.addEdgeStr("C", "D", 1);
-		graph.addEdgeStr("E", "F", 1);
-		graph.addEdgeStr("F", "A", 1);
-		graph.addEdgeStr("C", "F", 2);
-		graph.addEdgeStr("D", "B", 15);
-		graph.addEdgeStr("G", "C", 5);
-		graph.addEdgeStr("G", "E", 8);
+		graph.addEdge(A, B, 5);
+		graph.addEdge(B, C, 5);
+		graph.addEdge(C, D, 1);
+		graph.addEdge(E, F, 1);
+		graph.addEdge(F, A, 1);
+		graph.addEdge(C, F, 2);
+		graph.addEdge(D, B, 15);
+		graph.addEdge(G, C, 5);
+		graph.addEdge(G, E, 8);
 		
 		//describe
 		printNodesValues(graph.getNodes());
-		graph.getNodes().forEach(n -> n.printNeighbors());
+		System.out.println();
+
 		
 		//test reachability
 		System.out.print("F is reachable to E: ");
-		System.out.println(graph.nodeIsReachable(new GraphNode("F"), new GraphNode("E"))); //false
+		System.out.println(graph.nodeIsReachable(F, E)); //false
 		System.out.print("F is reachable to D: ");
-		System.out.println(graph.nodeIsReachable(new GraphNode("F"), new GraphNode("D"))); //true
+		System.out.println(graph.nodeIsReachable(F, D)); //true
 		
 		//test hasCycles
 		System.out.print("Graph has cycles: ");
 		System.out.println(graph.hasCycles());
 		
 		//test fewest hops
-		System.out.println("Fewest hop from G to B is: " + graph.fewestHops(new GraphNode("G"), new GraphNode("B")));
-		printPath(graph.getFewestHopsPath(new GraphNode("G"), new GraphNode("B")));
+		System.out.println("Fewest hop from G to B is: " + graph.fewestHops(G, B));
+		//printPath(graph.getFewestHopsPath(new GraphNode("G"), new GraphNode("B")));
 		
 		//test shortest path
 		System.out.println("Shortest from G to B is: " + graph.shortestPath(new GraphNode("G"), new GraphNode("B"))); 
-		printPath(graph.getShortestPath(new GraphNode("G"), new GraphNode("B")));
+		//printPath(graph.getShortestPath(new GraphNode("G"), new GraphNode("B")));
 
-		 */
+
 	}
 
 }
