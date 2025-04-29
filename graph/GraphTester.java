@@ -75,11 +75,9 @@ public class GraphTester {
 		
 		//test fewest hops
 		System.out.println("Fewest hop from G to B is: " + graph.fewestHops(G, B));
-		//printPath(graph.getFewestHopsPath(new GraphNode("G"), new GraphNode("B")));
-		
+
 		//test shortest path
 		System.out.println("Shortest from G to B is: " + graph.shortestPath(new GraphNode("G"), new GraphNode("B"))); 
-		//printPath(graph.getShortestPath(new GraphNode("G"), new GraphNode("B")));
 
 
 	}
