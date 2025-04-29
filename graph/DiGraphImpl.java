@@ -185,16 +185,94 @@ public class DiGraphImpl implements DiGraph{
 
 	@Override
 	public GraphNode getNode(String nodeValue) {
+		// Search through the nodeList for a node matching the given nodeValue
+		for (GraphNode node : nodeList) {
+			// Compare node's value with the provided value
+			if (node.getValue().equals(nodeValue)) {
+				// If match found, return this node
+				return node;
+			}
+		}
+		// If no node matches, return null
 		return null;
 	}
 
 	@Override
 	public int fewestHops(GraphNode fromNode, GraphNode toNode) {
-		return 0;
+		Queue<GraphNode> queue = new LinkedList<>(); // Queue for BFS
+		Map<GraphNode, Integer> hops = new HashMap<>();// Track # of hops to reach each node
+		Set<GraphNode> visited = new HashSet<>();// Track visited nodes
+
+		GraphNode start = getNode(fromNode.getValue());
+		GraphNode end = getNode(toNode.getValue());
+
+		if (start == null || end == null) return -1;
+
+		// Initialize BFS
+		queue.add(start);
+		hops.put(start, 0); // 0 hops to itself
+		visited.add(start);
+
+		while (!queue.isEmpty()) {
+			GraphNode current = queue.poll();
+
+			// If we found the destination node
+			int currentHops = hops.get(current);
+
+			if (current == end) {
+				return currentHops;
+			}
+
+			for (GraphNode neighbor : current.getNeighbors()) {
+				if (!visited.contains(neighbor)) {
+					queue.add(neighbor);
+					visited.add(neighbor);
+					hops.put(neighbor, currentHops + 1);
+				}
+			}
+		}
+
+		return -1; // if unreachable
 	}
 
 	@Override
 	public int shortestPath(GraphNode fromNode, GraphNode toNode) {
-		return 0;
+		Map<GraphNode, Integer> distance = new HashMap<>();
+		PriorityQueue<GraphNode> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
+		Set<GraphNode> visited = new HashSet<>();
+
+		GraphNode start = getNode(fromNode.getValue());
+		GraphNode end = getNode(toNode.getValue());
+
+		if (start == null || end == null) return -1;
+
+		for (GraphNode node : nodeList) {
+			distance.put(node, Integer.MAX_VALUE);
+		}
+
+		distance.put(start, 0);
+		queue.add(start);
+
+		while (!queue.isEmpty()) {
+			GraphNode current = queue.poll();
+
+			if (current == end) {
+				return distance.get(current);
+			}
+
+			visited.add(current);
+
+			for (GraphNode neighbor : current.getNeighbors()) {
+				if (!visited.contains(neighbor)) {
+					int newDist = distance.get(current) + current.getDistanceToNeighbor(neighbor);
+					if (newDist < distance.get(neighbor)) {
+						distance.put(neighbor, newDist);
+						queue.add(neighbor);
+					}
+				}
+			}
+		}
+
+		return -1; // if unreachable
 	}
 }
