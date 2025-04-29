@@ -29,8 +29,16 @@ public class GraphNode {
 	}
 	
 	public void printNeighbors() {
-		for (GraphNode node : getNeighbors()) {
-			System.out.println(node.getValue());
+
+		System.out.println("All edges from <" + value + "> are:");
+
+		if (paths.isEmpty()) {
+			System.out.println("- There is no edge from <" + value + ">.");
+			return;
+		}
+
+		for (GraphNode neighbor : getNeighbors()) {
+			System.out.println("- Edge to <" + neighbor.getValue() + ">, with weight " + paths.get(neighbor) + ".");
 		}
 	}
 	

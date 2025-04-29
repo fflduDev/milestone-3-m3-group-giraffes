@@ -57,9 +57,12 @@ public class GraphTester {
 		graph.addEdge(D, B, 15);
 		graph.addEdge(G, C, 5);
 		graph.addEdge(G, E, 8);
-		
+
 		//describe
 		printNodesValues(graph.getNodes());
+		System.out.println();
+		graph.getNodes().forEach(n -> n.printNeighbors());
+
 		System.out.println();
 
 		
@@ -68,17 +71,24 @@ public class GraphTester {
 		System.out.println(graph.nodeIsReachable(F, E)); //false
 		System.out.print("F is reachable to D: ");
 		System.out.println(graph.nodeIsReachable(F, D)); //true
-		
+
+		System.out.println();
+
 		//test hasCycles
 		System.out.print("Graph has cycles: ");
 		System.out.println(graph.hasCycles());
-		
+
+		System.out.println();
+
 		//test fewest hops
 		System.out.println("Fewest hop from G to B is: " + graph.fewestHops(G, B));
+		//printPath(graph.fewestHops(new GraphNode("G"), new GraphNode("B")));
+
+		System.out.println();
 
 		//test shortest path
-		System.out.println("Shortest from G to B is: " + graph.shortestPath(new GraphNode("G"), new GraphNode("B"))); 
-
+		System.out.println("Shortest from G to B is: " + graph.shortestPath(new GraphNode("G"), new GraphNode("B")));
+		//printPath(graph.shortestPath(new GraphNode("G"), new GraphNode("B")));
 
 	}
 
