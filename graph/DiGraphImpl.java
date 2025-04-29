@@ -275,4 +275,90 @@ public class DiGraphImpl implements DiGraph{
 
 		return -1; // if unreachable
 	}
+
+	@Override
+	public List<GraphNode> getFewestHopsPath(GraphNode fromNode, GraphNode toNode) {
+		Map<GraphNode, GraphNode> parentMap = new HashMap<>(); // to rebuild the path
+		Queue<GraphNode> queue = new LinkedList<>();
+		Set<GraphNode> visited = new HashSet<>();
+
+		GraphNode start = getNode(fromNode.getValue());
+		GraphNode end = getNode(toNode.getValue());
+
+		if (start == null || end == null) return null;
+
+		queue.add(start);
+		visited.add(start);
+
+		while (!queue.isEmpty()) {
+			GraphNode current = queue.poll();
+
+			if (current == end) {
+				// Reconstruct path
+				List<GraphNode> path = new LinkedList<>();
+				for (GraphNode node = end; node != null; node = parentMap.get(node)) {
+					path.add(0, node); // Insert at the beginning
+				}
+				return path;
+			}
+
+			for (GraphNode neighbor : current.getNeighbors()) {
+				if (!visited.contains(neighbor)) {
+					visited.add(neighbor);
+					parentMap.put(neighbor, current); // Keep track of how we got there
+					queue.add(neighbor);
+				}
+			}
+		}
+
+		return null; // if unreachable
+	}
+
+	@Override
+	public List<GraphNode> getShortestHopsPath(GraphNode fromNode, GraphNode toNode) {
+		Map<GraphNode, Integer> distance = new HashMap<>();
+		Map<GraphNode, GraphNode> parentMap = new HashMap<>();
+		PriorityQueue<GraphNode> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
+		Set<GraphNode> visited = new HashSet<>();
+
+		GraphNode start = getNode(fromNode.getValue());
+		GraphNode end = getNode(toNode.getValue());
+
+		if (start == null || end == null) return null;
+
+		for (GraphNode node : nodeList) {
+			distance.put(node, Integer.MAX_VALUE);
+		}
+
+		distance.put(start, 0);
+		queue.add(start);
+
+		while (!queue.isEmpty()) {
+			GraphNode current = queue.poll();
+
+			if (current == end) {
+				// Reconstruct path
+				List<GraphNode> path = new LinkedList<>();
+				for (GraphNode node = end; node != null; node = parentMap.get(node)) {
+					path.add(0, node);
+				}
+				return path;
+			}
+
+			visited.add(current);
+
+			for (GraphNode neighbor : current.getNeighbors()) {
+				if (!visited.contains(neighbor)) {
+					int newDist = distance.get(current) + current.getDistanceToNeighbor(neighbor);
+					if (newDist < distance.get(neighbor)) {
+						distance.put(neighbor, newDist);
+						parentMap.put(neighbor, current); // track the path
+						queue.add(neighbor);
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 }
