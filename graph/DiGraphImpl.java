@@ -315,7 +315,7 @@ public class DiGraphImpl implements DiGraph{
 	}
 
 	@Override
-	public List<GraphNode> getShortestHopsPath(GraphNode fromNode, GraphNode toNode) {
+	public List<GraphNode> getShortestPath(GraphNode fromNode, GraphNode toNode) {
 		Map<GraphNode, Integer> distance = new HashMap<>();
 		Map<GraphNode, GraphNode> parentMap = new HashMap<>();
 		PriorityQueue<GraphNode> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
