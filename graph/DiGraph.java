@@ -23,7 +23,7 @@ public interface DiGraph {
 	public GraphNode getNode(String nodeValue);
 
 	public List<GraphNode> getFewestHopsPath(GraphNode fromNode, GraphNode toNode);
-	public List<GraphNode> getShortestHopsPath(GraphNode fromNode, GraphNode toNode);
+	public List<GraphNode> getShortestPath(GraphNode fromNode, GraphNode toNode);
 
 
 	public int fewestHops(GraphNode fromNode, GraphNode toNode);
